@@ -1,0 +1,11 @@
+awscli
+click
+flake8
+pathlib2
+pip
+pre-commit
+python-dotenv
+setuptools
+wheel
+yapf
+-e .
