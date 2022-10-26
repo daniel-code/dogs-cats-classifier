@@ -9,3 +9,11 @@ setuptools
 wheel
 yapf
 -e .
+
+torch==1.12.1
+torchvision==0.13.1
+pytorch-lightning==1.7.7
+pandas==1.5.1
+matplotlib==3.6.0
+seaborn==0.12.1
+scikit-learn==1.1.2
