@@ -66,6 +66,7 @@ class DogsCatsImagesDataModule(LightningDataModule):
 
         np.random.seed(random_seed)
         np.random.shuffle(self.image_filenames)
+        self.image_filenames = self.image_filenames[:1000]
 
         assert len(split_rate) == 3, 'Length of `split_rate` needs to be 3. (train_split, val_split, test_split)'
         train_split, val_split, test_split = split_rate
@@ -81,10 +82,10 @@ class DogsCatsImagesDataModule(LightningDataModule):
                                          image_filenames=self.train_image_filenames,
                                          transform=self._train_transforms)
         self.val_data = DogsCatsImages(root=self.root,
-                                       image_filenames=self.train_image_filenames,
+                                       image_filenames=self.val_image_filenames,
                                        transform=self._val_transforms)
         self.test_data = DogsCatsImages(root=self.root,
-                                        image_filenames=self.train_image_filenames,
+                                        image_filenames=self.test_image_filenames,
                                         transform=self._test_transforms)
 
     def train_dataloader(self):
