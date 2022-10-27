@@ -66,7 +66,7 @@ class DogsCatsImagesDataModule(LightningDataModule):
 
         np.random.seed(random_seed)
         np.random.shuffle(self.image_filenames)
-        self.image_filenames = self.image_filenames[:1000]
+        self.image_filenames = self.image_filenames
 
         assert len(split_rate) == 3, 'Length of `split_rate` needs to be 3. (train_split, val_split, test_split)'
         train_split, val_split, test_split = split_rate
