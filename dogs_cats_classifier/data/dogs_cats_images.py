@@ -1,3 +1,4 @@
+import os.path
 from pathlib import Path
 from typing import Optional, List
 
@@ -23,7 +24,7 @@ class DogsCatsImages(VisionDataset):
     def __getitem__(self, index):
         image_path = str(self.image_filenames[index])
 
-        if image_path.split('.')[0].lower() == 'cat':
+        if os.path.basename(image_path).split('.')[0].lower() == 'cat':
             target = 0
         else:
             target = 1
