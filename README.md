@@ -24,8 +24,6 @@ Project Organization
 │                         the creator's initials, and a short `-` delimited description, e.g.
 │                         `1.0-jqp-initial-data-exploration`.
 │
-├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-│
 ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
 │   └── figures        <- Generated graphics and figures to be used in reporting
 │
@@ -40,24 +38,16 @@ Project Organization
 │
 ├── test.py            <- Scripts to predict single sample via trained models
 │
-├── dogs_cats_classifier                <- Source code for use in this project.
-│   │
-│   ├── __init__.py    <- Makes dogs_cats_classifier a Python module
-│   │
-│   ├── data           <- Scripts to download or generate data
-│   │   └── make_dataset.py
-│   │
-│   ├── features       <- Scripts to turn raw data into features for modeling
-│   │   └── build_features.py
-│   │
-│   ├── models         <- Scripts to construct model modules and architecture
-│   │ 
-│   ├── utils          <- Scripts to help train/test pipeline
-│   │
-│   └── visualization  <- Scripts to create exploratory and results oriented visualizations
-│       └── visualize.py
-│
-└── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
+└── dogs_cats_classifier                <- Source code for use in this project.
+    │
+    ├── __init__.py    <- Makes dogs_cats_classifier a Python module
+    │
+    ├── data           <- Scripts to download or generate data
+    │
+    ├── models         <- Scripts to construct model modules and architecture
+    │ 
+    └── utils          <- Scripts to help train/test pipeline
+
 ```
 
 --------
