@@ -9,8 +9,8 @@ class ResNet(ModelBase):
         return {
             'resnet18': resnet18,
             'resnet34': resnet34,
-            'resnet_50': resnet50,
-            'resnet_101': resnet101,
+            'resnet50': resnet50,
+            'resnet101': resnet101,
         }
 
     def _setup_model(self, model_type):
