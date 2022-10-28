@@ -23,7 +23,7 @@ from datetime import datetime
 @click.option('--image-size', type=int, nargs=2, default=(256, 256), help='The size of input image. Default: (256,256)')
 @click.option('--fast-dev-run', type=bool, is_flag=True, help='Run fast develop loop of pytorch lightning')
 @click.option('--seed', type=int, default=168, help='Random seed of train/test split. Default: 168')
-@click.option('--model-type', type=str, default='resnet_50', help='The types of model. Default: resnet_50')
+@click.option('--model-type', type=str, default='resnet50', help='The types of model. Default: resnet50')
 @click.option('--accelerator',
               type=str,
               default='auto',
