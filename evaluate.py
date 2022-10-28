@@ -19,7 +19,14 @@ from dogs_cats_classifier.utils import evaluate_model
               help=f'Number of workers. #CPU of this machine: {os.cpu_count()}. Default: 0')
 @click.option('--image-size', type=int, nargs=2, default=(256, 256), help='The size of input image. Default: (256,256)')
 @click.option('--seed', type=int, default=168, help='Random seed of train/test split. Default: 168')
-def main(dataset_root, batch_size, num_workers, image_size, seed, model_path):
+@click.option('--output-path',
+              type=str,
+              default='reports/figures',
+              help='Path to output model weight. Default: reports/figures')
+def main(dataset_root, batch_size, num_workers, image_size, seed, model_path, output_path):
+    # check output
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
     pl.seed_everything(seed, workers=True)
 
     test_t = T.Compose([
@@ -39,9 +46,9 @@ def main(dataset_root, batch_size, num_workers, image_size, seed, model_path):
 
     model = torch.jit.load(model_path)
 
-    evaluate_model(model=model, dataloader=datamodule.train_dataloader(), title='train')
-    evaluate_model(model=model, dataloader=datamodule.val_dataloader(), title='val')
-    evaluate_model(model=model, dataloader=datamodule.test_dataloader(), title='test')
+    evaluate_model(model=model, dataloader=datamodule.train_dataloader(), title='train', output_path=output_path)
+    evaluate_model(model=model, dataloader=datamodule.val_dataloader(), title='val', output_path=output_path)
+    evaluate_model(model=model, dataloader=datamodule.test_dataloader(), title='test', output_path=output_path)
 
 
 if __name__ == '__main__':

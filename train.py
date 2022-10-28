@@ -38,7 +38,7 @@ def main(batch_size, max_epochs, num_workers, image_size, dataset_root, fast_dev
          devices, output_path):
     exp_time = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     print(exp_time)
-    output_path = os.path.join(output_path, exp_time)
+    output_path = os.path.join(output_path, f'{model_type}_{exp_time}')
     # check output
     if not os.path.exists(output_path):
         os.makedirs(output_path)
@@ -105,7 +105,11 @@ def main(batch_size, max_epochs, num_workers, image_size, dataset_root, fast_dev
 
     # evaluation
     dogs_cats_datamodule.setup()
-    evaluate_model(model=model, dataloader=dogs_cats_datamodule.test_dataloader(), title='test')
+    evaluate_model(model=model,
+                   dataloader=dogs_cats_datamodule.test_dataloader(),
+                   title=f'{model_type}_test',
+                   output_path=output_path,
+                   verbose=False)
 
 
 if __name__ == '__main__':

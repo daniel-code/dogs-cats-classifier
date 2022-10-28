@@ -1,3 +1,5 @@
+import os.path
+
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
@@ -10,7 +12,7 @@ from pytorch_lightning import LightningModule
 from torch.utils.data import DataLoader
 
 
-def evaluate_model(model: LightningModule, dataloader: DataLoader, title: str):
+def evaluate_model(model: LightningModule, dataloader: DataLoader, title: str, output_path: str, verbose=True):
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model.eval()
     model.to(device)
@@ -63,5 +65,6 @@ def evaluate_model(model: LightningModule, dataloader: DataLoader, title: str):
 
     fig.suptitle(title)
     plt.tight_layout()
-    plt.savefig(f'./reports/figures/{title}.png', dpi=300)
-    plt.show()
+    plt.savefig(os.path.join(output_path, f'{title}.png'), dpi=300)
+    if verbose:
+        plt.show()
