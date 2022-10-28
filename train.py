@@ -35,8 +35,9 @@ from datetime import datetime
               default='model_weights',
               help='Path to output model weight. Default: model_weights')
 @click.option('--use-lr-scheduler', type=bool, is_flag=True, help='Use OneCycleLR lr scheduler')
+@click.option('--use-auto-augment', type=bool, is_flag=True, help='Use AutoAugmentPolicy')
 def main(batch_size, max_epochs, num_workers, image_size, dataset_root, fast_dev_run, seed, model_type, accelerator,
-         devices, output_path, use_lr_scheduler):
+         devices, output_path, use_lr_scheduler, use_auto_augment):
     exp_time = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     print(exp_time)
     output_path = os.path.join(output_path, f'{model_type}_{exp_time}')
@@ -48,14 +49,15 @@ def main(batch_size, max_epochs, num_workers, image_size, dataset_root, fast_dev
     pl.seed_everything(seed, workers=True)
 
     # prepare dataset
-    train_t = T.Compose([
-        T.RandomApply([
-            T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),
-        ]),
-        T.RandomAffine(degrees=45, translate=(0.1, 0.1)),
-        T.Resize(image_size),
-        T.ToTensor(),
-    ])
+    train_t = []
+    if use_auto_augment:
+        train_t.append(T.AutoAugment(T.AutoAugmentPolicy.IMAGENET))
+
+    train_t.append(T.Resize(image_size))
+    train_t.append(T.ToTensor())
+    train_t = T.Compose(train_t)
+    print('Training Data Augmentations')
+    print(train_t)
 
     test_t = T.Compose([
         T.Resize(image_size),
