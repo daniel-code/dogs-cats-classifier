@@ -12,6 +12,7 @@ class ModelBase(pl.LightningModule):
                  model_type: str = 'model-type',
                  input_shape: tuple = (256, 256),
                  max_epochs=None,
+                 use_lr_scheduler=False,
                  *args: Any,
                  **kwargs: Any):
         super(ModelBase, self).__init__(*args, **kwargs)
@@ -19,6 +20,7 @@ class ModelBase(pl.LightningModule):
         self.num_classes = num_classes
         self.lr = lr
         self.max_epochs = max_epochs
+        self.use_lr_scheduler = use_lr_scheduler
 
         self.models_mapping = self._setup_models_mapping()
         assert model_type in self.models_mapping, f'{model_type} is not available. There is available model types: {list(self.models_mapping.keys())}'
@@ -35,8 +37,11 @@ class ModelBase(pl.LightningModule):
 
     def configure_optimizers(self):
         optimizer = torch.optim.Adam(params=self.model.parameters(), lr=self.lr)
-        lr_scheduler = torch.optim.lr_scheduler.OneCycleLR(optimizer, max_lr=self.lr, total_steps=self.max_epochs)
-        return [optimizer], [lr_scheduler]
+        if self.use_lr_scheduler:
+            lr_scheduler = torch.optim.lr_scheduler.OneCycleLR(optimizer, max_lr=self.lr, total_steps=self.max_epochs)
+            return [optimizer], [lr_scheduler]
+        else:
+            return optimizer
 
     def forward(self, x) -> Any:
         return torch.sigmoid(self.model(x))

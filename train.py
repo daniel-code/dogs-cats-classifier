@@ -34,8 +34,9 @@ from datetime import datetime
               type=str,
               default='model_weights',
               help='Path to output model weight. Default: model_weights')
+@click.option('--use-lr-scheduler', type=bool, is_flag=True, help='Use OneCycleLR lr scheduler')
 def main(batch_size, max_epochs, num_workers, image_size, dataset_root, fast_dev_run, seed, model_type, accelerator,
-         devices, output_path):
+         devices, output_path, use_lr_scheduler):
     exp_time = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     print(exp_time)
     output_path = os.path.join(output_path, f'{model_type}_{exp_time}')
@@ -82,7 +83,11 @@ def main(batch_size, max_epochs, num_workers, image_size, dataset_root, fast_dev
     else:
         raise ValueError(f'{model_type} is not available.')
 
-    model = model(num_classes=1, model_type=model_type, input_shape=image_size, max_epochs=max_epochs)
+    model = model(num_classes=1,
+                  model_type=model_type,
+                  input_shape=image_size,
+                  max_epochs=max_epochs,
+                  use_lr_scheduler=use_lr_scheduler)
 
     # use pytorch lightning trainer
     trainer = pl.Trainer(
