@@ -13,6 +13,7 @@ class ModelBase(pl.LightningModule):
                  input_shape: tuple = (256, 256),
                  max_epochs=None,
                  use_lr_scheduler=False,
+                 finetune_last_layer=False,
                  *args: Any,
                  **kwargs: Any):
         super(ModelBase, self).__init__(*args, **kwargs)
@@ -21,10 +22,17 @@ class ModelBase(pl.LightningModule):
         self.lr = lr
         self.max_epochs = max_epochs
         self.use_lr_scheduler = use_lr_scheduler
+        self.finetune_last_layer = finetune_last_layer
 
         self.models_mapping = self._setup_models_mapping()
         assert model_type in self.models_mapping, f'{model_type} is not available. There is available model types: {list(self.models_mapping.keys())}'
         self.model = self._setup_model(model_type=model_type)
+
+        if finetune_last_layer:
+            for child in list(self.model.children())[:-1]:
+                for param in child.parameters():
+                    param.requires_grad = False
+
         self.loss_func = torch.nn.BCELoss()
 
         self.example_input_array = torch.zeros((1, 3, input_shape[0], input_shape[1]), dtype=torch.float32)
