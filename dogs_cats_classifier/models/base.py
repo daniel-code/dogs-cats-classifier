@@ -13,6 +13,7 @@ class ModelBase(pl.LightningModule):
                  input_shape: tuple = (256, 256),
                  max_epochs=None,
                  use_lr_scheduler=False,
+                 user_pretrained_weight=False,
                  finetune_last_layer=False,
                  *args: Any,
                  **kwargs: Any):
@@ -22,6 +23,7 @@ class ModelBase(pl.LightningModule):
         self.lr = lr
         self.max_epochs = max_epochs
         self.use_lr_scheduler = use_lr_scheduler
+        self.user_pretrained_weight = user_pretrained_weight
         self.finetune_last_layer = finetune_last_layer
 
         self.models_mapping = self._setup_models_mapping()

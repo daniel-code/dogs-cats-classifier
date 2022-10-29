@@ -36,9 +36,10 @@ from datetime import datetime
               help='Path to output model weight. Default: model_weights')
 @click.option('--use-lr-scheduler', type=bool, is_flag=True, help='Use OneCycleLR lr scheduler')
 @click.option('--use-auto-augment', type=bool, is_flag=True, help='Use AutoAugmentPolicy')
+@click.option('--user-pretrained-weight', type=bool, is_flag=True, help='Use pretrained model')
 @click.option('--finetune-last-layer', type=bool, is_flag=True, help='Finetune last layer of model')
 def main(batch_size, max_epochs, num_workers, image_size, dataset_root, fast_dev_run, seed, model_type, accelerator,
-         devices, output_path, use_lr_scheduler, use_auto_augment, finetune_last_layer):
+         devices, output_path, use_lr_scheduler, use_auto_augment, finetune_last_layer, user_pretrained_weight):
     exp_time = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     print(exp_time)
     output_path = os.path.join(output_path, f'{model_type}_{exp_time}')
@@ -92,6 +93,7 @@ def main(batch_size, max_epochs, num_workers, image_size, dataset_root, fast_dev
         input_shape=image_size,
         max_epochs=max_epochs,
         use_lr_scheduler=use_lr_scheduler,
+        user_pretrained_weight=user_pretrained_weight,
         finetune_last_layer=finetune_last_layer,
     )
 
