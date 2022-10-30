@@ -207,6 +207,15 @@ Compare different models performance
 bash scripts/different_models.sh
 ```
 
+- batch-size: 16
+- max-epochs: 10
+- seed: 168
+- image-size: (256, 256)
+- --use-lr-scheduler
+- --user-pretrained-weight
+- --use-auto-augment
+- --finetune-last-layer
+
 | Models           |  Accuracy  | Precision | Recall | AUCROC |
 |------------------|:----------:|:---------:|:------:|:------:|
 | resnet18         |   0.9844   |   0.9843  | 0.9846 | 0.9994 |
