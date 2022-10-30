@@ -34,6 +34,8 @@ Create an algorithm to distinguish dogs from cats
 
 ## Install packages
 
+This project was based on `python 3.8` and the packages in requirements.txt
+
 ```commandline
 pip install -r requirements.txt
 ```
