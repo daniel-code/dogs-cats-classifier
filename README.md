@@ -182,20 +182,20 @@ bash scripts/different_training_strateies.sh
 - seed: 168
 - image-size: (256, 256)
 
-| Setting             | Pretrained Model | OneCycle | AutoAugment | Accuracy   |
-|---------------------|------------------|----------|-------------|------------|
-| From scratch        |                  |          |             | 0.8852     |
-|                     |                  | V        |             | 0.9416     |
-|                     |                  |          | V           | 0.8932     |
-|                     |                  | V        | V           | 0.9360     |
-| Train Whole Model   | V                |          |             | 0.9784     |
-|                     | V                | V        |             | 0.9892     |
-|                     | V                |          | V           | 0.9828     |
-|                     | V                | V        | V           | 0.9920     |
-| Finetune Last Layer | V                |          |             | 0.9928     |
-|                     | V                | V        |             | 0.9912     |
-|                     | V                |          | V           | 0.9948     |
-|                     | **V**            | **V**    | **V**       | **0.9944** |
+|      Strategies     | Pretrained Weight | OneCycle | AutoAugment |     ACC    |
+|:-------------------:|:-----------------:|:--------:|:-----------:|:----------:|
+|     From scratch    |                   |          |             |     0.8852 |
+|                     |                   |     V    |             |     0.9416 |
+|                     |                   |          |      V      |     0.8932 |
+|                     |                   |     V    |      V      |     0.9360 |
+|  Train Whole Model  |         V         |          |             |     0.9784 |
+|                     |         V         |     V    |             |     0.9892 |
+|                     |         V         |          |      V      |     0.9828 |
+|                     |         V         |     V    |      V      |     0.9920 |
+| Finetune Last Layer |         V         |          |             |     0.9928 |
+|                     |         V         |     V    |             |     0.9912 |
+|                     |         V         |          |      V      |     0.9948 |
+|                     |       **V**       |   **V**  |    **V**    | **0.9944** |
 
 ## Different Models
 
