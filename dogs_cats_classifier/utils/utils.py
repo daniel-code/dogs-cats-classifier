@@ -10,9 +10,25 @@ from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, r
 from tqdm import tqdm
 from pytorch_lightning import LightningModule
 from torch.utils.data import DataLoader
+from typing import Union
+from torch import ScriptModule
 
 
-def evaluate_model(model: LightningModule, dataloader: DataLoader, title: str, output_path: str, verbose=True):
+def evaluate_model(model: Union[LightningModule, ScriptModule],
+                   dataloader: DataLoader,
+                   title: str,
+                   output_path: str,
+                   verbose=False):
+    """
+    evaluate model
+    Args:
+        model: model to be evaluated
+        dataloader: torch DataLoader
+        title: title of figure and filename
+        output_path: path to save the figure
+        verbose: display figure or not. Default: False
+
+    """
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model.eval()
     model.to(device)

@@ -23,7 +23,8 @@ from dogs_cats_classifier.utils import evaluate_model
               type=str,
               default='reports/figures',
               help='Path to output model weight. Default: reports/figures')
-def main(dataset_root, batch_size, num_workers, image_size, seed, model_path, output_path):
+@click.option('--verbose', type=bool, is_flag=True, help='Display evaluation figures')
+def main(dataset_root, batch_size, num_workers, image_size, seed, model_path, output_path, verbose):
     # check output
     if not os.path.exists(output_path):
         os.makedirs(output_path)
@@ -46,9 +47,21 @@ def main(dataset_root, batch_size, num_workers, image_size, seed, model_path, ou
 
     model = torch.jit.load(model_path)
 
-    evaluate_model(model=model, dataloader=datamodule.train_dataloader(), title='train', output_path=output_path)
-    evaluate_model(model=model, dataloader=datamodule.val_dataloader(), title='val', output_path=output_path)
-    evaluate_model(model=model, dataloader=datamodule.test_dataloader(), title='test', output_path=output_path)
+    evaluate_model(model=model,
+                   dataloader=datamodule.train_dataloader(),
+                   title='train',
+                   output_path=output_path,
+                   verbose=verbose)
+    evaluate_model(model=model,
+                   dataloader=datamodule.val_dataloader(),
+                   title='val',
+                   output_path=output_path,
+                   verbose=verbose)
+    evaluate_model(model=model,
+                   dataloader=datamodule.test_dataloader(),
+                   title='test',
+                   output_path=output_path,
+                   verbose=verbose)
 
 
 if __name__ == '__main__':
