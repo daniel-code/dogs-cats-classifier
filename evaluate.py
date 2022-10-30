@@ -12,7 +12,7 @@ from dogs_cats_classifier.utils import evaluate_model
 @click.command()
 @click.option('-r', '--dataset-root', type=click.Path(exists=True), required=True, help='The root path to dataset.')
 @click.option('--model-path', type=click.Path(exists=True), required=True, help='Path to the model weight')
-@click.option('--batch-size', type=int, default=16)
+@click.option('--batch-size', type=int, default=16, help='Batch size. Default: 16')
 @click.option('--num-workers',
               type=int,
               default=0,

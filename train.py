@@ -14,8 +14,8 @@ from datetime import datetime
 
 @click.command()
 @click.option('-r', '--dataset-root', type=click.Path(exists=True), required=True, help='The root path to dataset.')
-@click.option('--batch-size', type=int, default=16)
-@click.option('--max-epochs', type=int, default=10)
+@click.option('--batch-size', type=int, default=16, help='Batch size. Default: 16')
+@click.option('--max-epochs', type=int, default=10, help='Training epochs. Default: 10')
 @click.option('--num-workers',
               type=int,
               default=0,

@@ -49,8 +49,8 @@ Usage: python train.py [OPTIONS]
 
 Options:
   -r, --dataset-root PATH   The root path to dataset.  [required]
-  --batch-size INTEGER
-  --max-epochs INTEGER
+  --batch-size INTEGER      Batch size. Default: 16
+  --max-epochs INTEGER      Training epochs. Default: 10
   --num-workers INTEGER     Number of workers. #CPU of this machine: 16.
                             Default: 0
   --image-size INTEGER...   The size of input image. Default: (256,256)
@@ -68,6 +68,7 @@ Options:
   --user-pretrained-weight  Use pretrained model
   --finetune-last-layer     Finetune last layer of model
   --help                    Show this message and exit.
+
 ```
 
 **Examples**
@@ -110,7 +111,7 @@ Usage: python evaluate.py [OPTIONS]
 Options:
   -r, --dataset-root PATH  The root path to dataset.  [required]
   --model-path PATH        Path to the model weight  [required]
-  --batch-size INTEGER
+  --batch-size INTEGER     Batch size. Default: 16
   --num-workers INTEGER    Number of workers. #CPU of this machine: 16.
                            Default: 0
   --image-size INTEGER...  The size of input image. Default: (256,256)
@@ -142,7 +143,7 @@ Options:
   --model-path PATH        Path to the model weight  [required]
   --image-size INTEGER...  The size of input image. Default: (256,256)
   --output-path TEXT       Path to output model prediction. Default: reports
-  --batch-size INTEGER
+  --batch-size INTEGER     Batch size. Default: 32
   --help                   Show this message and exit.
 
 ```
