@@ -184,19 +184,19 @@ bash scripts/different_training_strateies.sh
 - seed: 168
 - image-size: (256, 256)
 
-|      Strategies     | Pretrained Weight | OneCycle | AutoAugment |     ACC    |
+|      Strategies     | Pretrained Weight | OneCycle | AutoAugment |  Accuracy  |
 |:-------------------:|:-----------------:|:--------:|:-----------:|:----------:|
-|     From scratch    |                   |          |             |     0.8852 |
-|                     |                   |     V    |             |     0.9416 |
-|                     |                   |          |      V      |     0.8932 |
-|                     |                   |     V    |      V      |     0.9360 |
-|  Train Whole Model  |         V         |          |             |     0.9784 |
-|                     |         V         |     V    |             |     0.9892 |
-|                     |         V         |          |      V      |     0.9828 |
-|                     |         V         |     V    |      V      |     0.9920 |
-| Finetune Last Layer |         V         |          |             |     0.9928 |
-|                     |         V         |     V    |             |     0.9912 |
-|                     |         V         |          |      V      |     0.9948 |
+|     From scratch    |                   |          |             |   0.8852   |
+|                     |                   |     V    |             |   0.9416   |
+|                     |                   |          |      V      |   0.8932   |
+|                     |                   |     V    |      V      |   0.9360   |
+|  Train Whole Model  |         V         |          |             |   0.9784   |
+|                     |         V         |     V    |             |   0.9892   |
+|                     |         V         |          |      V      |   0.9828   |
+|                     |         V         |     V    |      V      |   0.9920   |
+| Finetune Last Layer |         V         |          |             |   0.9928   |
+|                     |         V         |     V    |             |   0.9912   |
+|                     |         V         |          |      V      |   0.9948   |
 |                     |       **V**       |   **V**  |    **V**    | **0.9944** |
 
 ## Different Models
@@ -207,16 +207,16 @@ Compare different models performance
 bash scripts/different_models.sh
 ```
 
-| Models           | Accuracy   |
-|------------------|------------|
-| resnet18         |     0.9844 |
-| resnet34         |     0.9832 |
-| resnet50         |     0.9944 |
-| resnet101        |     0.9964 |
-| resnext50_32x4d  |     0.9932 |
-| resnext101_32x8d |     0.9944 |
-| swin_t           |     0.9940 |
-| swin_s           |     0.9964 |
+| Models           |  Accuracy  |
+|------------------|:----------:|
+| resnet18         |   0.9844   |
+| resnet34         |   0.9832   |
+| resnet50         |   0.9944   |
+| resnet101        |   0.9964   |
+| resnext50_32x4d  |   0.9932   |
+| resnext101_32x8d |   0.9944   |
+| swin_t           |   0.9940   |
+| swin_s           |   0.9964   |
 | **swin_b**       | **0.9976** |
 
 # Project Organization
