@@ -103,7 +103,7 @@ def predict_images(model: ScriptModule, image_folder: str, image_size: tuple, ou
 @click.option('--model-path', type=click.Path(exists=True), required=True, help='Path to the model weight')
 @click.option('--image-size', type=int, nargs=2, default=(256, 256), help='The size of input image. Default: (256,256)')
 @click.option('--output-path', type=str, default='reports', help='Path to output model prediction. Default: reports')
-@click.option('--batch-size', type=int, default=32)
+@click.option('--batch-size', type=int, default=32, help='Batch size. Default: 32')
 def main(image_path, image_folder, model_path, image_size, output_path, batch_size):
     assert image_path is not None or image_folder is not None, '`image_path` or `image_folder` should not be None.'
 

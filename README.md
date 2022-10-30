@@ -49,8 +49,8 @@ Usage: python train.py [OPTIONS]
 
 Options:
   -r, --dataset-root PATH   The root path to dataset.  [required]
-  --batch-size INTEGER
-  --max-epochs INTEGER
+  --batch-size INTEGER      Batch size. Default: 16
+  --max-epochs INTEGER      Training epochs. Default: 10
   --num-workers INTEGER     Number of workers. #CPU of this machine: 16.
                             Default: 0
   --image-size INTEGER...   The size of input image. Default: (256,256)
@@ -68,6 +68,7 @@ Options:
   --user-pretrained-weight  Use pretrained model
   --finetune-last-layer     Finetune last layer of model
   --help                    Show this message and exit.
+
 ```
 
 **Examples**
@@ -110,7 +111,7 @@ Usage: python evaluate.py [OPTIONS]
 Options:
   -r, --dataset-root PATH  The root path to dataset.  [required]
   --model-path PATH        Path to the model weight  [required]
-  --batch-size INTEGER
+  --batch-size INTEGER     Batch size. Default: 16
   --num-workers INTEGER    Number of workers. #CPU of this machine: 16.
                            Default: 0
   --image-size INTEGER...  The size of input image. Default: (256,256)
@@ -142,7 +143,7 @@ Options:
   --model-path PATH        Path to the model weight  [required]
   --image-size INTEGER...  The size of input image. Default: (256,256)
   --output-path TEXT       Path to output model prediction. Default: reports
-  --batch-size INTEGER
+  --batch-size INTEGER     Batch size. Default: 32
   --help                   Show this message and exit.
 
 ```
@@ -181,20 +182,20 @@ bash scripts/different_training_strateies.sh
 - seed: 168
 - image-size: (256, 256)
 
-| Setting             | Pretrained Model | OneCycle | AutoAugment | Accuracy   |
-|---------------------|------------------|----------|-------------|------------|
-| From scratch        |                  |          |             | 0.8852     |
-|                     |                  | V        |             | 0.9416     |
-|                     |                  |          | V           | 0.8932     |
-|                     |                  | V        | V           | 0.9360     |
-| Train Whole Model   | V                |          |             | 0.9784     |
-|                     | V                | V        |             | 0.9892     |
-|                     | V                |          | V           | 0.9828     |
-|                     | V                | V        | V           | 0.9920     |
-| Finetune Last Layer | V                |          |             | 0.9928     |
-|                     | V                | V        |             | 0.9912     |
-|                     | V                |          | V           | 0.9948     |
-|                     | **V**            | **V**    | **V**       | **0.9944** |
+|      Strategies     | Pretrained Weight | OneCycle | AutoAugment |     ACC    |
+|:-------------------:|:-----------------:|:--------:|:-----------:|:----------:|
+|     From scratch    |                   |          |             |     0.8852 |
+|                     |                   |     V    |             |     0.9416 |
+|                     |                   |          |      V      |     0.8932 |
+|                     |                   |     V    |      V      |     0.9360 |
+|  Train Whole Model  |         V         |          |             |     0.9784 |
+|                     |         V         |     V    |             |     0.9892 |
+|                     |         V         |          |      V      |     0.9828 |
+|                     |         V         |     V    |      V      |     0.9920 |
+| Finetune Last Layer |         V         |          |             |     0.9928 |
+|                     |         V         |     V    |             |     0.9912 |
+|                     |         V         |          |      V      |     0.9948 |
+|                     |       **V**       |   **V**  |    **V**    | **0.9944** |
 
 ## Different Models
 
