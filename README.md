@@ -5,11 +5,15 @@ Create an algorithm to distinguish dogs from cats
 # Contents <!-- omit in toc -->
 
 - [Setup](#setup)
-    - [Download dataset](#download-dataset)
-    - [Install packages](#install-packages)
-- [Train models](#train-models)
-- [Evaluate models](#evaluate-models)
-- [Inference](#inference)
+  - [Download dataset](#download-dataset)
+  - [Install packages](#install-packages)
+- [Usage](#usage)
+  - [Training](#training)
+  - [Evaluation](#evaluation)
+  - [Inference](#inference)
+- [Performance](#performance)
+  - [Different Training Strategy](#different-training-strategy)
+  - [Different Models](#different-models)
 - [Project Organization](#project-organization)
 
 # Setup
@@ -34,9 +38,39 @@ Create an algorithm to distinguish dogs from cats
 pip install -r requirements.txt
 ```
 
-# Train models
+# Usage
+
+## Training
 
 Training different model type and setting.
+
+```commandline
+Usage: python train.py [OPTIONS]
+
+Options:
+  -r, --dataset-root PATH   The root path to dataset.  [required]
+  --batch-size INTEGER
+  --max-epochs INTEGER
+  --num-workers INTEGER     Number of workers. #CPU of this machine: 16.
+                            Default: 0
+  --image-size INTEGER...   The size of input image. Default: (256,256)
+  --fast-dev-run            Run fast develop loop of pytorch lightning
+  --seed INTEGER            Random seed of train/test split. Default: 168
+  --model-type TEXT         The types of model. Default: resnet50
+  --accelerator TEXT        Supports passing different accelerator types
+                            ("cpu", "gpu", "tpu", "ipu", "auto") as well as
+                            custom accelerator instances. Default: auto
+  --devices INTEGER
+  --output-path TEXT        Path to output model weight. Default:
+                            model_weights
+  --use-lr-scheduler        Use OneCycleLR lr scheduler
+  --use-auto-augment        Use AutoAugmentPolicy
+  --user-pretrained-weight  Use pretrained model
+  --finetune-last-layer     Finetune last layer of model
+  --help                    Show this message and exit.
+```
+
+**Examples**
 
 - Training by default setting (resnet_50)
 
@@ -44,7 +78,14 @@ Training different model type and setting.
 python train.py -r "datasets/final/train" 
 ```
 
-- Training with different model types
+- Training with pretrained weight, AutoAugment, and OneCycleLR. See more details
+  in `scripts/different_training_strateies.sh`
+
+```commandline
+python train.py -r "datasets/final/train" --user-pretrained-weight --finetune-last-layer --use-lr-scheduler --use-auto-augment
+```
+
+- Training with different model types. See more details in `scripts/different_models.sh`
 
 ```commandline
 python train.py -r "datasets/final/train" --model-type resnext50_32x4d
@@ -56,19 +97,57 @@ Support model types:
 - ResNext: resnext50_32x4d, resnext101_32x8d
 - Swin: swin_t, swin_s, swin_b
 
-After training, the model weight will export to `model_weights/<model-type>_<exp_time>`. 
+After training, the model weight will export to `model_weights/<model-type>_<exp_time>`.
+Use `tensorboard --logdir model_weights` to browse training log.
 
-# Evaluate models
+## Evaluation
 
 After evaluating, the results were exported to `reports/figures`.
+
+```commandline
+Usage: python evaluate.py [OPTIONS]
+
+Options:
+  -r, --dataset-root PATH  The root path to dataset.  [required]
+  --model-path PATH        Path to the model weight  [required]
+  --batch-size INTEGER
+  --num-workers INTEGER    Number of workers. #CPU of this machine: 16.
+                           Default: 0
+  --image-size INTEGER...  The size of input image. Default: (256,256)
+  --seed INTEGER           Random seed of train/test split. Default: 168
+  --output-path TEXT       Path to output model weight. Default:
+                           reports/figures
+  --help                   Show this message and exit.
+
+```
+
+**Examples**
+
+- Evaluate trained model
 
 ```commandline
 python evaluate.py -r "datasets/final/train" --model-path "model_weights/<model-type>_<exp_time>/model.pt"
 ```
 
-# Inference
+## Inference
 
 Inference a single image or images of the folder.
+
+```commandline
+Usage: python test.py [OPTIONS]
+
+Options:
+  --image-path PATH        Path to the single image.
+  --image-folder PATH      Path to the images folder
+  --model-path PATH        Path to the model weight  [required]
+  --image-size INTEGER...  The size of input image. Default: (256,256)
+  --output-path TEXT       Path to output model prediction. Default: reports
+  --batch-size INTEGER
+  --help                   Show this message and exit.
+
+```
+
+**Examples**
 
 - Single image inference
 
@@ -101,6 +180,8 @@ Save `results.csv` to `reports` by default.
 ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
 │   └── figures        <- Generated graphics and figures to be used in reporting
 │
+├── scripts            <- Scripts to train model in different setting
+│
 ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
 │                         generated with `pip freeze > requirements.txt`
 │
@@ -110,7 +191,7 @@ Save `results.csv` to `reports` by default.
 │
 ├── evaluate.py        <- Scripts to evaluate models
 │
-├── test.py            <- Scripts to predict single sample via trained models
+├── test.py            <- Scripts to predict single sample or multiple images via trained models
 │
 └── dogs_cats_classifier                <- Source code for use in this project.
     │
