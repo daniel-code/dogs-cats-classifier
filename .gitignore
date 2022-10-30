@@ -93,3 +93,6 @@ model_weights/
 
 # exclude logs
 logs/
+
+reports/
+

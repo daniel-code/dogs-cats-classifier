@@ -125,7 +125,7 @@ class DogsCatsImagesDataModule(LightningDataModule):
                           num_workers=self.num_workers)
 
     def __repr__(self):
-        return f'Embryo Phases Classification\n' + \
+        return f'Dogs Cats Classification\n' + \
                f'#Labels: 1 = dog, 0 = cat\n' + \
                f'#Train: {len(self.train_image_filenames)}\n' + \
                f'#Val: {len(self.val_image_filenames)}\n' + \

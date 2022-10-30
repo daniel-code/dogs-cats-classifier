@@ -15,7 +15,7 @@ from datetime import datetime
 @click.command()
 @click.option('-r', '--dataset-root', type=click.Path(exists=True), required=True, help='The root path to dataset.')
 @click.option('--batch-size', type=int, default=16)
-@click.option('--max-epochs', type=int, default=3)
+@click.option('--max-epochs', type=int, default=10)
 @click.option('--num-workers',
               type=int,
               default=0,
@@ -23,7 +23,7 @@ from datetime import datetime
 @click.option('--image-size', type=int, nargs=2, default=(256, 256), help='The size of input image. Default: (256,256)')
 @click.option('--fast-dev-run', type=bool, is_flag=True, help='Run fast develop loop of pytorch lightning')
 @click.option('--seed', type=int, default=168, help='Random seed of train/test split. Default: 168')
-@click.option('--model-type', type=str, default='resnet_50', help='The types of model. Default: resnet_50')
+@click.option('--model-type', type=str, default='resnet50', help='The types of model. Default: resnet50')
 @click.option('--accelerator',
               type=str,
               default='auto',
@@ -34,8 +34,12 @@ from datetime import datetime
               type=str,
               default='model_weights',
               help='Path to output model weight. Default: model_weights')
+@click.option('--use-lr-scheduler', type=bool, is_flag=True, help='Use OneCycleLR lr scheduler')
+@click.option('--use-auto-augment', type=bool, is_flag=True, help='Use AutoAugmentPolicy')
+@click.option('--user-pretrained-weight', type=bool, is_flag=True, help='Use pretrained model')
+@click.option('--finetune-last-layer', type=bool, is_flag=True, help='Finetune last layer of model')
 def main(batch_size, max_epochs, num_workers, image_size, dataset_root, fast_dev_run, seed, model_type, accelerator,
-         devices, output_path):
+         devices, output_path, use_lr_scheduler, use_auto_augment, finetune_last_layer, user_pretrained_weight):
     exp_time = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     print(exp_time)
     output_path = os.path.join(output_path, f'{model_type}_{exp_time}')
@@ -47,14 +51,15 @@ def main(batch_size, max_epochs, num_workers, image_size, dataset_root, fast_dev
     pl.seed_everything(seed, workers=True)
 
     # prepare dataset
-    train_t = T.Compose([
-        T.RandomApply([
-            T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),
-        ]),
-        T.RandomAffine(degrees=45, translate=(0.1, 0.1)),
-        T.Resize(image_size),
-        T.ToTensor(),
-    ])
+    train_t = []
+    if use_auto_augment:
+        train_t.append(T.AutoAugment(T.AutoAugmentPolicy.IMAGENET))
+
+    train_t.append(T.Resize(image_size))
+    train_t.append(T.ToTensor())
+    train_t = T.Compose(train_t)
+    print('Training Data Augmentations')
+    print(train_t)
 
     test_t = T.Compose([
         T.Resize(image_size),
@@ -82,7 +87,15 @@ def main(batch_size, max_epochs, num_workers, image_size, dataset_root, fast_dev
     else:
         raise ValueError(f'{model_type} is not available.')
 
-    model = model(num_classes=1, model_type=model_type, input_shape=image_size, max_epochs=max_epochs)
+    model = model(
+        num_classes=1,
+        model_type=model_type,
+        input_shape=image_size,
+        max_epochs=max_epochs,
+        use_lr_scheduler=use_lr_scheduler,
+        user_pretrained_weight=user_pretrained_weight,
+        finetune_last_layer=finetune_last_layer,
+    )
 
     # use pytorch lightning trainer
     trainer = pl.Trainer(
