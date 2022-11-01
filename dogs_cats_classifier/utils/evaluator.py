@@ -146,7 +146,12 @@ class Evaluator:
         fig, axs = plt.subplots(nrows=nrows, ncols=n_cols, figsize=(n_cols, int(nrows * 2.5)))
 
         for i, (idx, data) in enumerate(df.iterrows()):
-            image = Image.open(data['filename'])
+            try:
+                image = Image.open(data['filename'])
+            except FileNotFoundError as e:
+                print(e)
+                continue
+
             if nrows > 1:
                 ax = axs[i // n_cols][i % n_cols]
             else:
