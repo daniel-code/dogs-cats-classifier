@@ -3,7 +3,6 @@ from pathlib import Path
 
 import click
 import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 import torch
 import torchvision.transforms as T
@@ -11,9 +10,9 @@ from PIL import Image
 from torch.jit._script import ScriptModule
 from torch.utils.data import DataLoader
 from torchvision.transforms.functional import pil_to_tensor
-from tqdm import tqdm
 
 from dogs_cats_classifier.data.dogs_cats_images import DogsCatsImages
+from dogs_cats_classifier.utils import Evaluator
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -72,27 +71,12 @@ def predict_images(model: ScriptModule, image_folder: str, image_size: tuple, ou
     dataset = DogsCatsImages(root=image_folder, image_filenames=image_filenames, transform=test_t)
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=False, drop_last=False)
 
-    model.to(device)
+    evaluator = Evaluator(model=model, output_path=output_path)
 
-    predictions = []
-
-    with tqdm(total=len(dataloader)) as pbar:
-        for x, y in dataloader:
-            x = x.to(device)
-
-            y_pred = model(x)
-
-            predictions.extend(y_pred.detach().to('cpu').numpy().tolist())
-
-            pbar.update()
-
-    predictions = np.array(predictions).flatten()
-    class_predictions = (predictions > 0.5).astype(int)
-
-    output = list(zip(image_filenames, class_predictions, predictions))
-    output_df = pd.DataFrame(output, columns=['filenames', 'class', 'model_pred'])
-    output_df['filenames'] = output_df['filenames'].apply(lambda x: os.path.basename(x))
-    output_df['class'] = output_df['class'].apply(lambda x: 'cat' if x == 0 else 'dog')
+    _, _, class_predictions = evaluator.inference_dataloader(dataloader)
+    output_df = zip(image_filenames, class_predictions)
+    output_df = pd.DataFrame(output_df, columns=['filename', 'label'])
+    output_df.to_csv()
     print(output_df)
     output_df.to_csv(os.path.join(output_path, 'results.csv'), index=False)
 

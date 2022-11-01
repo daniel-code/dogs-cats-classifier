@@ -8,7 +8,7 @@ from pytorch_lightning.callbacks import LearningRateMonitor
 
 from dogs_cats_classifier.data import DogsCatsImagesDataModule
 from dogs_cats_classifier.models import ResNet, Swin, ResNext
-from dogs_cats_classifier.utils import evaluate_model
+from dogs_cats_classifier.utils import Evaluator
 from datetime import datetime
 
 
@@ -118,11 +118,8 @@ def main(batch_size, max_epochs, num_workers, image_size, dataset_root, fast_dev
 
     # evaluation
     dogs_cats_datamodule.setup()
-    evaluate_model(model=model,
-                   dataloader=dogs_cats_datamodule.test_dataloader(),
-                   title=f'{model_type}_test',
-                   output_path=output_path,
-                   verbose=False)
+    evaluator = Evaluator(model=model, output_path=output_path)
+    evaluator.evaluate(dataloader=dogs_cats_datamodule.test_dataloader(), title=f'{model_type}_test', verbose=False)
 
 
 if __name__ == '__main__':
