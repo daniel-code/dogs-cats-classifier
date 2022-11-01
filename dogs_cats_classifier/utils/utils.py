@@ -37,15 +37,16 @@ def evaluate_model(model: Union[LightningModule, ScriptModule],
     ground_truth = []
 
     with tqdm(total=len(dataloader)) as pbar:
-        for x, y in dataloader:
-            x = x.to(device)
+        with torch.no_grad():
+            for x, y in dataloader:
+                x = x.to(device)
 
-            y_pred = model(x)
+                y_pred = model(x)
 
-            predictions.extend(y_pred.detach().to('cpu').numpy().tolist())
-            ground_truth.extend(y.detach().to('cpu').numpy().tolist())
+                predictions.extend(y_pred.detach().to('cpu').numpy().tolist())
+                ground_truth.extend(y.detach().to('cpu').numpy().tolist())
 
-            pbar.update()
+                pbar.update()
 
     predictions = np.array(predictions).flatten()
     class_predictions = predictions > 0.5
