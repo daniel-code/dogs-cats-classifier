@@ -1,3 +1,3 @@
-from .utils import evaluate_model
+from .evaluator import Evaluator
 
-__all__ = ['evaluate_model']
+__all__ = ['Evaluator']

@@ -6,7 +6,7 @@ import torch
 from torchvision.transforms import transforms as T
 
 from dogs_cats_classifier.data import DogsCatsImagesDataModule
-from dogs_cats_classifier.utils import evaluate_model
+from dogs_cats_classifier.utils import Evaluator
 
 
 @click.command()
@@ -47,21 +47,10 @@ def main(dataset_root, batch_size, num_workers, image_size, seed, model_path, ou
 
     model = torch.jit.load(model_path)
 
-    evaluate_model(model=model,
-                   dataloader=datamodule.train_dataloader(),
-                   title='train',
-                   output_path=output_path,
-                   verbose=verbose)
-    evaluate_model(model=model,
-                   dataloader=datamodule.val_dataloader(),
-                   title='val',
-                   output_path=output_path,
-                   verbose=verbose)
-    evaluate_model(model=model,
-                   dataloader=datamodule.test_dataloader(),
-                   title='test',
-                   output_path=output_path,
-                   verbose=verbose)
+    evaluator = Evaluator(model=model, output_path=output_path)
+    evaluator.evaluate(dataloader=datamodule.train_dataloader(), title='train', verbose=verbose)
+    evaluator.evaluate(dataloader=datamodule.val_dataloader(), title='val', verbose=verbose)
+    evaluator.evaluate(dataloader=datamodule.test_dataloader(), title='test', verbose=verbose)
 
 
 if __name__ == '__main__':
