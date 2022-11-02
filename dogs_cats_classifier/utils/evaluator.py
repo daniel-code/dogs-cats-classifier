@@ -169,6 +169,6 @@ class Evaluator:
             ax.axis('off')
         plt.tight_layout()
 
-        plt.savefig(os.path.join(output_path, f'{title}_images.png'), dpi=300)
+        plt.savefig(os.path.join(output_path, f'{title}_images.jpg'))
         if verbose:
             plt.show()
