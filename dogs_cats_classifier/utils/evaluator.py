@@ -158,7 +158,7 @@ class Evaluator:
                 ax = axs[i % n_cols]
 
             ax.imshow(image)
-            ax.set_title('cat' if data['ground_truth'] == 0 else 'dogs')
+            ax.set_title('cat' if data['ground_truth'] == 0 else 'dog')
 
         for i in range(nrows * n_cols):
             if nrows > 1:
@@ -169,6 +169,6 @@ class Evaluator:
             ax.axis('off')
         plt.tight_layout()
 
-        plt.savefig(os.path.join(output_path, f'{title}_images.png'), dpi=300)
+        plt.savefig(os.path.join(output_path, f'{title}_images.jpg'))
         if verbose:
             plt.show()
