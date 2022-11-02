@@ -158,7 +158,7 @@ class Evaluator:
                 ax = axs[i % n_cols]
 
             ax.imshow(image)
-            ax.set_title('cat' if data['ground_truth'] == 0 else 'dogs')
+            ax.set_title('cat' if data['ground_truth'] == 0 else 'dog')
 
         for i in range(nrows * n_cols):
             if nrows > 1:
