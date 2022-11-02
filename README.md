@@ -10,6 +10,7 @@ Create an algorithm to distinguish dogs from cats
 - [Usage](#usage)
   - [Training](#training)
   - [Evaluation](#evaluation)
+  - [Analysis](#analysis)
   - [Inference](#inference)
 - [Experiments](#experiments)
 - [Project Organization](#project-organization)
@@ -129,6 +130,36 @@ Options:
 ```commandline
 python evaluate.py -r "datasets/final/train" --model-path "model_weights/<model-type>_<exp_time>/model.pt"
 ```
+
+## Analysis
+
+Analysis model prediction
+
+```commandline
+Usage: python analysis.py [OPTIONS]
+
+Options:
+  -r, --dataset-root PATH  The root path to dataset.  [required]
+  --model-path PATH        Path to the model weight  [required]
+  --batch-size INTEGER     Batch size. Default: 16
+  --num-workers INTEGER    Number of workers. #CPU of this machine: 16.
+                           Default: 0
+  --image-size INTEGER...  The size of input image. Default: (256,256)
+  --seed INTEGER           Random seed of train/test split. Default: 168
+  --output-path TEXT       Path to output model prediction. Default: reports
+  --help                   Show this message and exit.
+
+```
+
+**Examples**
+
+- analysis trained model
+
+```commandline
+python analysis.py -r "datasets/final/train" --model-path "model_weights/<model-type>_<exp_time>/model.pt"
+```
+
+By default, the `reports/test.png` is AUC of ROC curve and confusion matrix, and the `reports/test_images.jpg` shows the fail cases.
 
 ## Inference
 
