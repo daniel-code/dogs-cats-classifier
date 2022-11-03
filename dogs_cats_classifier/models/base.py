@@ -26,8 +26,6 @@ class ModelBase(pl.LightningModule):
         self.user_pretrained_weight = user_pretrained_weight
         self.finetune_last_layer = finetune_last_layer
 
-        self.models_mapping = self._setup_models_mapping()
-        assert model_type in self.models_mapping, f'{model_type} is not available. There is available model types: {list(self.models_mapping.keys())}'
         self.model = self._setup_model(model_type=model_type)
 
         if finetune_last_layer:
@@ -38,9 +36,6 @@ class ModelBase(pl.LightningModule):
         self.loss_func = torch.nn.BCELoss()
 
         self.example_input_array = torch.zeros((1, 3, input_shape[0], input_shape[1]), dtype=torch.float32)
-
-    def _setup_models_mapping(self) -> dict:
-        raise NotImplementedError
 
     def _setup_model(self, model_type) -> torch.nn.Module:
         raise NotImplementedError
