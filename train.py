@@ -113,9 +113,10 @@ def main(batch_size, max_epochs, num_workers, image_size, dataset_root, fast_dev
     torch.jit.save(script_model, os.path.join(output_path, 'model.pt'))
 
     # evaluation
-    dogs_cats_datamodule.setup()
-    evaluator = Evaluator(model=model, output_path=output_path)
-    evaluator.evaluate(dataloader=dogs_cats_datamodule.test_dataloader(), title=f'{model_type}_test', verbose=False)
+    if not fast_dev_run:
+        dogs_cats_datamodule.setup()
+        evaluator = Evaluator(model=model, output_path=output_path)
+        evaluator.evaluate(dataloader=dogs_cats_datamodule.test_dataloader(), title=f'{model_type}_test', verbose=False)
 
 
 if __name__ == '__main__':
