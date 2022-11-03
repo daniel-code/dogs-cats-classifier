@@ -1,5 +1,4 @@
-from .resnet import ResNet
-from .resnext import ResNext
-from .swin import Swin
+from .base import ModelBase
+from .torch_model_wrapper import is_torch_builtin_models, TorchModelWrapper
 
-__all__ = ['ResNet', 'Swin', 'ResNext']
+__all__ = ['ModelBase', 'TorchModelWrapper', 'is_torch_builtin_models']

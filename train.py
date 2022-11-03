@@ -7,7 +7,7 @@ import torchvision.transforms as T
 from pytorch_lightning.callbacks import LearningRateMonitor
 
 from dogs_cats_classifier.data import DogsCatsImagesDataModule
-from dogs_cats_classifier.models import ResNet, Swin, ResNext
+from dogs_cats_classifier.models import TorchModelWrapper, is_torch_builtin_models
 from dogs_cats_classifier.utils import Evaluator
 from datetime import datetime
 
@@ -78,16 +78,12 @@ def main(batch_size, max_epochs, num_workers, image_size, dataset_root, fast_dev
     print(dogs_cats_datamodule)
 
     # prepare model
-    if 'swin' in model_type:
-        model = Swin
-    elif 'resnext' in model_type:
-        model = ResNext
-    elif 'resnet' in model_type:
-        model = ResNet
+    if is_torch_builtin_models(model_type):
+        model_class = TorchModelWrapper
     else:
         raise ValueError(f'{model_type} is not available.')
 
-    model = model(
+    model = model_class(
         num_classes=1,
         model_type=model_type,
         input_shape=image_size,
@@ -117,9 +113,10 @@ def main(batch_size, max_epochs, num_workers, image_size, dataset_root, fast_dev
     torch.jit.save(script_model, os.path.join(output_path, 'model.pt'))
 
     # evaluation
-    dogs_cats_datamodule.setup()
-    evaluator = Evaluator(model=model, output_path=output_path)
-    evaluator.evaluate(dataloader=dogs_cats_datamodule.test_dataloader(), title=f'{model_type}_test', verbose=False)
+    if not fast_dev_run:
+        dogs_cats_datamodule.setup()
+        evaluator = Evaluator(model=model, output_path=output_path)
+        evaluator.evaluate(dataloader=dogs_cats_datamodule.test_dataloader(), title=f'{model_type}_test', verbose=False)
 
 
 if __name__ == '__main__':
