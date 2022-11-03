@@ -94,6 +94,13 @@ python train.py -r "datasets/final/train" --user-pretrained-weight --finetune-la
 python train.py -r "datasets/final/train" --model-type resnext50_32x4d
 ```
 
+- Training with different image size. Some model has image resolution constraint, e.g. vit, only accept image size by (
+  244, 244).
+
+```commandline
+python train.py -r "datasets/final/train" --model-type vit_b_16  --image-size 224 224
+```
+
 After training, the model weight will export to `model_weights/<model-type>_<exp_time>`.
 Use `tensorboard --logdir model_weights` to browse training log.
 
