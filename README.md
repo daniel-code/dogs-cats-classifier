@@ -87,17 +87,12 @@ python train.py -r "datasets/final/train"
 python train.py -r "datasets/final/train" --user-pretrained-weight --finetune-last-layer --use-lr-scheduler --use-auto-augment
 ```
 
-- Training with different model types. See more details in `scripts/different_models.sh`
+- Training with different model types. See more details in `scripts/different_models.sh`.
+  Support [pytorch built-in model types](https://pytorch.org/vision/main/models.html#classification).
 
 ```commandline
 python train.py -r "datasets/final/train" --model-type resnext50_32x4d
 ```
-
-Support model types:
-
-- ResNet: resnet18, resnet34, resnet_50, resnet_101
-- ResNext: resnext50_32x4d, resnext101_32x8d
-- Swin: swin_t, swin_s, swin_b
 
 After training, the model weight will export to `model_weights/<model-type>_<exp_time>`.
 Use `tensorboard --logdir model_weights` to browse training log.
@@ -159,7 +154,8 @@ Options:
 python analysis.py -r "datasets/final/train" --model-path "model_weights/<model-type>_<exp_time>/model.pt"
 ```
 
-By default, the `reports/test.png` is AUC of ROC curve and confusion matrix, and the `reports/test_images.jpg` shows the fail cases.
+By default, the `reports/test.png` is AUC of ROC curve and confusion matrix, and the `reports/test_images.jpg` shows the
+fail cases.
 
 ## Inference
 
