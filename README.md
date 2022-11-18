@@ -1,6 +1,6 @@
 # Dogs Cats Classifier <!-- omit in toc -->
 
-Create an algorithm to distinguish dogs from cats
+Create an algorithm to distinguish dogs from cats.
 
 # Contents <!-- omit in toc -->
 
@@ -46,7 +46,7 @@ pip install -r requirements.txt
 Training different model type and setting.
 
 ```commandline
-Usage: python train.py [OPTIONS]
+Usage: python scripts/train.py [OPTIONS]
 
 Options:
   -r, --dataset-root PATH   The root path to dataset.  [required]
@@ -77,28 +77,28 @@ Options:
 - Training by default setting (resnet_50)
 
 ```commandline
-python train.py -r "datasets/final/train" 
+python scripts/train.py -r "datasets/final/train" 
 ```
 
 - Training with pretrained weight, AutoAugment, and OneCycleLR. See more details
-  in `scripts/different_training_strateies.sh`
+  in `shells/different_training_strateies.sh`
 
 ```commandline
-python train.py -r "datasets/final/train" --user-pretrained-weight --finetune-last-layer --use-lr-scheduler --use-auto-augment
+python scripts/train.py -r "datasets/final/train" --user-pretrained-weight --finetune-last-layer --use-lr-scheduler --use-auto-augment
 ```
 
-- Training with different model types. See more details in `scripts/different_models.sh`.
+- Training with different model types. See more details in `shells/different_models.sh`.
   Support [pytorch built-in model types](https://pytorch.org/vision/main/models.html#classification).
 
 ```commandline
-python train.py -r "datasets/final/train" --model-type resnext50_32x4d
+python scripts/train.py -r "datasets/final/train" --model-type resnext50_32x4d
 ```
 
 - Training with different image size. Some model has image resolution constraint, e.g. vit, only accept image size by (
   244, 244).
 
 ```commandline
-python train.py -r "datasets/final/train" --model-type vit_b_16  --image-size 224 224
+python scripts/train.py -r "datasets/final/train" --model-type vit_b_16  --image-size 224 224
 ```
 
 After training, the model weight will export to `model_weights/<model-type>_<exp_time>`.
@@ -109,7 +109,7 @@ Use `tensorboard --logdir model_weights` to browse training log.
 After evaluating, the results were exported to `reports/figures`.
 
 ```commandline
-Usage: python evaluate.py [OPTIONS]
+Usage: python scripts/evaluate.py [OPTIONS]
 
 Options:
   -r, --dataset-root PATH  The root path to dataset.  [required]
@@ -130,7 +130,7 @@ Options:
 - Evaluate trained model
 
 ```commandline
-python evaluate.py -r "datasets/final/train" --model-path "model_weights/<model-type>_<exp_time>/model.pt"
+python scripts/evaluate.py -r "datasets/final/train" --model-path "model_weights/<model-type>_<exp_time>/model.pt"
 ```
 
 ## Analysis
@@ -138,7 +138,7 @@ python evaluate.py -r "datasets/final/train" --model-path "model_weights/<model-
 Analysis model prediction
 
 ```commandline
-Usage: python analysis.py [OPTIONS]
+Usage: python scripts/analysis.py [OPTIONS]
 
 Options:
   -r, --dataset-root PATH  The root path to dataset.  [required]
@@ -158,7 +158,7 @@ Options:
 - analysis trained model
 
 ```commandline
-python analysis.py -r "datasets/final/train" --model-path "model_weights/<model-type>_<exp_time>/model.pt"
+python scripts/analysis.py -r "datasets/final/train" --model-path "model_weights/<model-type>_<exp_time>/model.pt"
 ```
 
 By default, the `reports/test.png` is AUC of ROC curve and confusion matrix, and the `reports/test_images.jpg` shows the
@@ -169,7 +169,7 @@ fail cases.
 Inference a single image or images of the folder.
 
 ```commandline
-Usage: python test.py [OPTIONS]
+Usage: python scripts/test.py [OPTIONS]
 
 Options:
   --image-path PATH        Path to the single image.
@@ -187,7 +187,7 @@ Options:
 - Single image inference
 
 ```commandline
-python test.py --image-path="datasets/final/test1/1.jpg" --model-path="model_weights/<model-type>_<exp_time>/model.pt"
+python scripts/test.py --image-path="datasets/final/test1/1.jpg" --model-path="model_weights/<model-type>_<exp_time>/model.pt"
 ```
 
 Save `result.png` to `reports` by default.
@@ -195,7 +195,7 @@ Save `result.png` to `reports` by default.
 - Images of the folder inference
 
 ```commandline
-python test.py --image-folder="datasets/final/test1" --model-path="model_weights/<model-type>_<exp_time>/model.pt"
+python scripts/test.py --image-folder="datasets/final/test1" --model-path="model_weights/<model-type>_<exp_time>/model.pt"
 ``` 
 
 Save `results.csv` to `reports` by default.
@@ -231,11 +231,15 @@ Save `results.csv` to `reports` by default.
 │
 ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
 │
-├── train.py           <- Scripts to train models
+├── scripts
+│   ├── train.py        <- Scripts to train models
+│   │
+│   ├── evaluate.py     <- Scripts to evaluate models
+│   │
+│   └── test.py         <- Scripts to predict single sample via trained models
 │
-├── evaluate.py        <- Scripts to evaluate models
-│
-├── test.py            <- Scripts to predict single sample or multiple images via trained models
+├── shells              <- Base shells. 
+│   └── train.sh        <- Shells to run multiple training settings at once.
 │
 └── dogs_cats_classifier                <- Source code for use in this project.
     │
@@ -251,4 +255,4 @@ Save `results.csv` to `reports` by default.
 
 --------
 
-<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
+<p><small>Project based on the <a target="_blank" href="https://github.com/daniel-code/pytorch-project-template">pytorch-project-template</a>. </small></p>
